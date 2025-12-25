@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000'; // Adjust if needed
+const API_URL = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
 
 export const api = {
     startSession: async () => {
@@ -43,7 +43,8 @@ export const api = {
         return response.data;
     },
 
-    trespass: async (sessionId, key) => {
+    trespass: async (key) => {
+        const sessionId = localStorage.getItem('game_session_id');
         const response = await axios.post(`${API_URL}/game/${sessionId}/trespass`, { key });
         return response.data;
     }

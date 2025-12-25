@@ -15,6 +15,7 @@ app = FastAPI(title="Birthday Quest API", lifespan=lifespan)
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+    "https://birthday-game.vercel.app",
     "*" # Allow all for local dev convenience
 ]
 
