@@ -12,3 +12,4 @@ class TaskType(str, Enum):
     CLICK = "CLICK"
     INPUT = "INPUT"
     WAIT = "WAIT"
+    PUZZLE = "PUZZLE"

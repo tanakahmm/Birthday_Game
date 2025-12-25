@@ -94,9 +94,10 @@ const Inventory = ({ items = [] }) => {
             {/* Decoration */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
 
-            <h3 className="text-sm font-mono text-cyan-400 mb-4 flex items-center gap-2">
+            {/* <h3 className="text-sm font-mono text-cyan-400 mb-4 flex items-center gap-2">
                 <Box size={16} /> STORAGE MATRIX
-            </h3>
+            </h3> */}
+            <div className="mb-4" />
 
             <div className="grid grid-cols-4 gap-3">
                 {slots.map((item, idx) => (

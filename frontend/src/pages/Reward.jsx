@@ -36,7 +36,7 @@ const Reward = () => {
           {step === 0 && !wrongChoice && (
             <motion.div key="choice" className="game-panel" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <motion.h1 className="title-xl neon-text">Are you Dumb?</motion.h1>
-              <p className="subtitle">(If none told you this)</p>
+              <p className="subtitle">(If none asked you this)</p>
 
               <motion.div className="game-btn mt-6 cursor-pointer" onClick={() => setStep(0.5)}>Yes, I am dumb</motion.div>
               <motion.div className="mt-3 text-gray-400 cursor-pointer" onClick={() => setWrongChoice(true)}>No I'm not dumb</motion.div>
@@ -111,9 +111,10 @@ const Reward = () => {
           {step === 4 && (
             <motion.div key="final" className="game-panel" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <motion.img src={cakeImg} className="game-image-round border-8 border-pink-500 shadow-2xl cursor-pointer" animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} onClick={resetGame} />
-              <h1 className="title-xl bg-gradient-to-b from-pink-300 to-pink-600 text-transparent bg-clip-text">
-                Happy Birthday Dumbhead 🎉
-              </h1>
+              <h1 className="title-xl bg-gradient-to-b from-yellow-300 via-amber-400 to-orange-500 text-transparent bg-clip-text drop-shadow-[0_4px_20px_rgba(251,191,36,0.6)]">
+  Happy Birthday Dumbhead 🎉
+</h1>
+
               <p className="opacity-60">Issokayyyy Thanks chepdhu le mellaga hehe</p>
             </motion.div>
           )}

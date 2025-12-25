@@ -157,7 +157,7 @@ async def unlock_vault(session_id: UUID):
     if session.phase != GamePhase.VAULT:
          raise HTTPException(status_code=400, detail="Invalid Phase")
          
-    cost = 500
+    cost = 0
     if session.current_cp < cost:
         raise HTTPException(status_code=400, detail="Insufficient Logic Coins")
         
@@ -165,3 +165,29 @@ async def unlock_vault(session_id: UUID):
     session.phase = GamePhase.CELEBRATION
     await session.save()
     return {"message": "VAULT OPENED", "phase": session.phase}
+
+@router.post("/{session_id}/trespass")
+async def trespass(session_id: UUID, key_payload: dict):
+    """
+    Attempt to bypass security with a master key.
+    Body: {"key": "..."}
+    """
+    session = await GameSession.find_one(GameSession.session_id == session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+
+    key = key_payload.get("key", "")
+    
+    if key == "0102":
+        # Progressive Unlock Logic
+        if session.phase == GamePhase.WARMUP:
+            session.phase = GamePhase.SQL_GATE
+        elif session.phase == GamePhase.SQL_GATE:
+            session.phase = GamePhase.SUDOKU
+        elif session.phase == GamePhase.SUDOKU:
+            session.phase = GamePhase.VAULT
+        
+        await session.save()
+        return {"success": True, "message": "Access Granted: Override Accepted.", "phase": session.phase}
+    
+    return {"success": False, "message": "Access Denied: Invalid Key."}

@@ -2,21 +2,18 @@ from app.models import Task, StoreItem, SqlChallenge, TaskType, GamePhase
 
 async def seed_data():
     # Seed Tasks
-    if await Task.count() == 0:
-        await Task(
-            task_id="click_1",
-            description="Click the button",
-            reward_cp=10,
-            task_type=TaskType.CLICK,
-            required_phase=GamePhase.WARMUP
-        ).create()
-        await Task(
-            task_id="click_5",
-            description="Click 5 times quickly",
-            reward_cp=50,
-            task_type=TaskType.CLICK,
-            required_phase=GamePhase.WARMUP
-        ).create()
+    tasks_to_seed = [
+        Task(task_id="click_1", description="Click the button", reward_cp=10, task_type=TaskType.CLICK, required_phase=GamePhase.WARMUP),
+        Task(task_id="click_5", description="Click 5 times quickly", reward_cp=50, task_type=TaskType.CLICK, required_phase=GamePhase.WARMUP),
+        Task(task_id="dumb_click", description="Click me if you think i am dumb", reward_cp=20, task_type=TaskType.CLICK, required_phase=GamePhase.WARMUP),
+        Task(task_id="pattern_1", description="Complete the pattern", reward_cp=50, task_type=TaskType.PUZZLE, required_phase=GamePhase.WARMUP),
+        Task(task_id="math_1", description="Solve the checksum", reward_cp=30, task_type=TaskType.PUZZLE, required_phase=GamePhase.WARMUP),
+        Task(task_id="code_1", description="Fix the bug", reward_cp=40, task_type=TaskType.PUZZLE, required_phase=GamePhase.WARMUP),
+    ]
+
+    for task in tasks_to_seed:
+        if not await Task.find_one(Task.task_id == task.task_id):
+            await task.create()
     
     # Seed Store
     if await StoreItem.count() == 0:

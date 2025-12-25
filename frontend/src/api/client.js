@@ -41,5 +41,10 @@ export const api = {
     unlockVault: async (sessionId) => {
         const response = await axios.post(`${API_URL}/game/${sessionId}/vault/unlock`);
         return response.data;
+    },
+
+    trespass: async (sessionId, key) => {
+        const response = await axios.post(`${API_URL}/game/${sessionId}/trespass`, { key });
+        return response.data;
     }
 };

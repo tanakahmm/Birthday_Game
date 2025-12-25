@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { useGame } from '../context/GameContext';
 import { motion } from 'framer-motion';
 
+import TrespassModal from '../components/TrespassModal';
+
 const SQLGate = () => {
     const { validateSQL } = useGame();
     const [query, setQuery] = useState('');
     const [error, setError] = useState('');
     const [shaking, setShaking] = useState(false);
+    const [showTrespass, setShowTrespass] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -77,11 +80,7 @@ const SQLGate = () => {
                     <div className="mt-4 flex justify-center">
                         <button
                             type="button"
-                            onClick={async () => {
-                                // Hardcoded correct query for bypass as per backend expectation
-                                const bypassQuery = "SELECT MAX(Salary) FROM Employee WHERE Salary < (SELECT MAX(Salary) FROM Employee)";
-                                await validateSQL(bypassQuery);
-                            }}
+                            onClick={() => setShowTrespass(true)}
                             className="text-xs text-slate-700 hover:text-red-500 transition-colors uppercase tracking-widest opacity-50 hover:opacity-100"
                             style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginTop: '1rem' }}
                         >
@@ -90,6 +89,8 @@ const SQLGate = () => {
                     </div>
                 </form>
             </motion.div>
+
+            <TrespassModal isOpen={showTrespass} onClose={() => setShowTrespass(false)} />
         </div>
     );
 };

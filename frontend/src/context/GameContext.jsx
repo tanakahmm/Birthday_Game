@@ -107,6 +107,21 @@ export const GameProvider = ({ children }) => {
         }
     }
 
+    const trespass = async (key) => {
+        if (!session) return;
+        try {
+            const res = await api.trespass(session.session_id, key);
+            if (res.success) {
+                await refreshSession(session.session_id);
+                return true;
+            }
+            return false;
+        } catch (err) {
+            console.error("Trespass failed", err);
+            return false;
+        }
+    }
+
     const resetGame = async () => {
         if (!session) return;
         await api.resetSession(session.session_id);
@@ -124,6 +139,7 @@ export const GameProvider = ({ children }) => {
             validateSQL,
             completeSudoku,
             unlockVault,
+            trespass,
             resetGame
         }}>
             {children}

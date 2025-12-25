@@ -28,10 +28,13 @@ const SOLUTION = [
     [3, 4, 5, 2, 8, 6, 1, 7, 9]
 ];
 
+import TrespassModal from '../components/TrespassModal';
+
 const Sudoku = () => {
     const { completeSudoku } = useGame();
     const [board, setBoard] = useState(INITIAL_BOARD);
     const [error, setError] = useState('');
+    const [showTrespass, setShowTrespass] = useState(false);
 
     const handleChange = (row, col, value) => {
         // Only allow single digits
@@ -130,9 +133,7 @@ const Sudoku = () => {
 
                 <div className="mt-4 flex justify-center">
                     <button
-                        onClick={async () => {
-                            await completeSudoku();
-                        }}
+                        onClick={() => setShowTrespass(true)}
                         className="text-xs text-slate-700 hover:text-red-500 transition-colors uppercase tracking-widest opacity-50 hover:opacity-100"
                         style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginTop: '1rem' }}
                     >
@@ -140,6 +141,8 @@ const Sudoku = () => {
                     </button>
                 </div>
             </motion.div>
+
+            <TrespassModal isOpen={showTrespass} onClose={() => setShowTrespass(false)} />
         </div>
     );
 };
