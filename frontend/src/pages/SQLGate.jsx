@@ -73,6 +73,21 @@ const SQLGate = () => {
                     >
                         EXECUTE QUERY
                     </button>
+
+                    <div className="mt-4 flex justify-center">
+                        <button
+                            type="button"
+                            onClick={async () => {
+                                // Hardcoded correct query for bypass as per backend expectation
+                                const bypassQuery = "SELECT MAX(Salary) FROM Employee WHERE Salary < (SELECT MAX(Salary) FROM Employee)";
+                                await validateSQL(bypassQuery);
+                            }}
+                            className="text-xs text-slate-700 hover:text-red-500 transition-colors uppercase tracking-widest opacity-50 hover:opacity-100"
+                            style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginTop: '1rem' }}
+                        >
+                            [ TRESPASS WITH KEY ]
+                        </button>
+                    </div>
                 </form>
             </motion.div>
         </div>

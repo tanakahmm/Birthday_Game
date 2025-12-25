@@ -127,6 +127,18 @@ const Sudoku = () => {
                 >
                     STABILIZE LOGIC CORE
                 </button>
+
+                <div className="mt-4 flex justify-center">
+                    <button
+                        onClick={async () => {
+                            await completeSudoku();
+                        }}
+                        className="text-xs text-slate-700 hover:text-red-500 transition-colors uppercase tracking-widest opacity-50 hover:opacity-100"
+                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', marginTop: '1rem' }}
+                    >
+                        [ TRESPASS WITH KEY ]
+                    </button>
+                </div>
             </motion.div>
         </div>
     );

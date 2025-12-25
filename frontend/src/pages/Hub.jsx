@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../context/GameContext';
 import TaskCard from '../components/TaskCard';
+import Inventory from '../components/Inventory';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, ShoppingCart, Key, Terminal } from 'lucide-react';
 import { api } from '../api/client'; // Direct access for specialized calls if needed, or stick to context
@@ -78,7 +79,7 @@ const GameHub = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
 
                 {/* TASKS PANEL */}
-                <section>
+                <section className="lg:col-span-2">
                     <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Terminal size={20} /> TASKS
                     </h3>
@@ -89,44 +90,52 @@ const GameHub = () => {
                     </div>
                 </section>
 
-                {/* STORE PANEL */}
-                <section>
-                    <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <ShoppingCart size={20} /> STORE
-                    </h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {STORE_ITEMS.map(item => {
-                            const DeviceIcon = item.icon || ShoppingCart;
-                            const isOwned = inventory.includes(item.item_id);
-                            const canAfford = current_cp >= item.cost;
+                {/* SIDEBAR: INVENTORY & STORE */}
+                <div className="flex flex-col gap-8">
+                    {/* INVENTORY PANEL */}
+                    <section>
+                        <Inventory items={inventory} />
+                    </section>
 
-                            return (
-                                <div key={item.item_id} className="card" style={{ opacity: isOwned ? 0.5 : 1 }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                                        <span style={{ fontWeight: 'bold' }}>{item.name}</span>
-                                        <span style={{ color: 'var(--gold)' }}>{item.cost} CP</span>
+                    {/* STORE PANEL */}
+                    <section>
+                        <h3 style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <ShoppingCart size={20} /> STORE
+                        </h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            {STORE_ITEMS.map(item => {
+                                const DeviceIcon = item.icon || ShoppingCart;
+                                const isOwned = inventory.includes(item.item_id);
+                                const canAfford = current_cp >= item.cost;
+
+                                return (
+                                    <div key={item.item_id} className="card" style={{ opacity: isOwned ? 0.5 : 1 }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                            <span style={{ fontWeight: 'bold' }}>{item.name}</span>
+                                            <span style={{ color: 'var(--gold)' }}>{item.cost} CP</span>
+                                        </div>
+                                        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                                            {item.description}
+                                        </p>
+                                        <button
+                                            className="btn-primary"
+                                            disabled={isOwned || !canAfford}
+                                            onClick={() => buyItem(item.item_id)}
+                                            style={{
+                                                width: '100%',
+                                                filter: !canAfford && !isOwned ? 'grayscale(1)' : 'none',
+                                                cursor: !canAfford && !isOwned ? 'not-allowed' : 'pointer'
+                                            }}
+                                        >
+                                            {isOwned ? 'OWNED' : canAfford ? 'BUY' : 'LOCKED'}
+                                        </button>
                                     </div>
-                                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                                        {item.description}
-                                    </p>
-                                    <button
-                                        className="btn-primary"
-                                        disabled={isOwned || !canAfford}
-                                        onClick={() => buyItem(item.item_id)}
-                                        style={{
-                                            width: '100%',
-                                            filter: !canAfford && !isOwned ? 'grayscale(1)' : 'none',
-                                            cursor: !canAfford && !isOwned ? 'not-allowed' : 'pointer'
-                                        }}
-                                    >
-                                        {isOwned ? 'OWNED' : canAfford ? 'BUY' : 'LOCKED'}
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </section>
+                                );
+                            })}
+                        </div>
+                    </section>
 
+                </div>
             </div>
         </div>
     );
